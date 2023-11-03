@@ -9,6 +9,10 @@ export default {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
     },
+    colors: {
+      primary: "#55B4B7",
+      secondary: "#F5F5F5",
+    },
   },
   plugins: [],
 } satisfies Config;
