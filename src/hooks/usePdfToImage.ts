@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf";
 
-const PdfToImage = () => {
+const usePdfToImage = (pdfUrl: string): string => {
   const [imgSrc, setImgSrc] = useState("");
 
   useEffect(() => {
-    const pdfUrl = "/demo.pdf";
-
     pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
 
     const loadingTask = pdfjs.getDocument(pdfUrl);
@@ -26,17 +24,14 @@ const PdfToImage = () => {
         };
 
         page.render(renderContext).promise.then(() => {
-          // Convert canvas to an image URL
           const imgData = canvas.toDataURL("image/png");
-
-          // Set the image URL using useState
           setImgSrc(imgData);
         });
       });
     });
-  }, []);
+  }, [pdfUrl]);
 
-  return <img src={imgSrc} alt="PDF Page 1" />;
+  return imgSrc;
 };
 
-export default PdfToImage;
+export default usePdfToImage;

@@ -13,6 +13,7 @@ export default {
       primary: "rgb(198, 72, 126)",
       secondary: "#F5F5F5",
       orange: "rgb(210, 131, 84)",
+      white: "#ffffff",
       gray: {
         100: "#fcfcfd",
         200: "#f1f5f7",

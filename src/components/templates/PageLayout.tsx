@@ -29,12 +29,12 @@ const PageLayout = (props: Props): ReactElement => {
   const navigation = useMemo(() => {
     return [
       {
-        name: "ホーム",
+        name: "カテゴリ1",
         href: "/",
         current: !router.query.searchStatusType,
       },
       {
-        name: "オークション",
+        name: "カテゴリ2",
         href: "?searchStatusType=PENDING",
         current: router.query.searchStatusType === "PENDING",
         onClick: async (): Promise<void> => {
@@ -42,7 +42,7 @@ const PageLayout = (props: Props): ReactElement => {
         },
       },
       {
-        name: "カートリ",
+        name: "カテゴリ3",
         href: "?searchStatusType=RUNNING",
         current: router.query.searchStatusType === "RUNNING",
         onClick: async (): Promise<void> => {
@@ -50,7 +50,7 @@ const PageLayout = (props: Props): ReactElement => {
         },
       },
       {
-        name: "マイページ",
+        name: "カテゴリ4",
         href: "?searchStatusType=FINISHED",
         current: router.query.searchStatusType === "FINISHED",
       },
@@ -110,7 +110,7 @@ const PageLayout = (props: Props): ReactElement => {
         </header>
         <main
           className={classNames(
-            "relative flex-grow overflow-hidden",
+            " flex-grow overflow-hidden",
             props.mainClassName,
           )}
         >
