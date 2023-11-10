@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import PdfContent from "~/components/molucules/PdfContent";
+import SearchBar from "~/components/organisms/SearchBar";
 import PageHead from "~/components/templates/Head";
 import PageLayout from "~/components/templates/PageLayout";
 import usePdfToImage from "~/hooks/usePdfToImage";
@@ -13,8 +14,11 @@ export default function Home() {
     <>
       <PageHead />
       <PageLayout>
-        <div className="p-5">
-          <div className="flex w-full flex-wrap justify-center gap-5">
+        <div className="px-12 pb-6">
+          <div className="pt-6">
+            <SearchBar isSearchInitialized={true} />
+          </div>
+          <div className="flex w-full flex-wrap items-center justify-between pt-4">
             {demoArray.map((_, index) => (
               <PdfContent src={imgSrc} title={"タイトル"} key={index} />
             ))}
