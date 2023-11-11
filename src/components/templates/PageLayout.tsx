@@ -3,9 +3,11 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactElement, ReactNode } from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Image from "next/image";
+import SettingMenu from "../organisms/SettingMenu";
+import { Category } from "@prisma/client";
 // import { clearedSearch } from "@/slices/app/search/searchSlice";
 // import { useAppDispatch } from "@/store";
 
@@ -13,49 +15,21 @@ interface Props {
   mainClassName?: string | undefined;
   children?: ReactNode;
   fixedHeader?: boolean | undefined;
+  categories?: Category[];
 }
 
 const PageLayout = (props: Props): ReactElement => {
-  const [open, setOpen] = useState(true);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const router = useRouter();
-  // const dispatch = useAppDispatch();
-  console.log(router.query);
 
-  const toggleDrawer = useCallback(() => {
-    setOpen((prevState) => !prevState);
-  }, []);
-
-  const navigation = useMemo(() => {
-    return [
-      {
-        name: "カテゴリ1",
-        href: "/",
-        current: !router.query.searchStatusType,
-      },
-      {
-        name: "カテゴリ2",
-        href: "?searchStatusType=PENDING",
-        current: router.query.searchStatusType === "PENDING",
-        onClick: async (): Promise<void> => {
-          // dispatch(clearedSearch());
-        },
-      },
-      {
-        name: "カテゴリ3",
-        href: "?searchStatusType=RUNNING",
-        current: router.query.searchStatusType === "RUNNING",
-        onClick: async (): Promise<void> => {
-          // dispatch(clearedSearch());
-        },
-      },
-      {
-        name: "カテゴリ4",
-        href: "?searchStatusType=FINISHED",
-        current: router.query.searchStatusType === "FINISHED",
-      },
-    ];
-  }, [router]);
+  const handleMenuOpened = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClosed = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box>
@@ -63,18 +37,18 @@ const PageLayout = (props: Props): ReactElement => {
       <div className="flex min-h-screen flex-col">
         <header
           className={classNames(
-            "bg-white top-0 z-20",
+            "top-0 z-20 bg-white",
             props.fixedHeader ? "fixed w-full" : "sticky",
           )}
         >
-          <div className="border-gray-200 border-b-2 px-5">
+          <div className="border-b-2 border-gray-200 px-5">
             <div className="-my-[1px] flex h-14 items-center justify-between">
               <div className="flex items-center space-x-10">
                 <IconButton
                   aria-label="open drawer"
                   color="inherit"
                   edge="start"
-                  onClick={toggleDrawer}
+                  onClick={handleMenuOpened}
                 >
                   <MenuIcon />
                 </IconButton>
@@ -88,21 +62,26 @@ const PageLayout = (props: Props): ReactElement => {
                 </div>
 
                 <div className="flex h-14 space-x-4">
-                  {navigation.map((item) => (
-                    <Link
-                      className={classNames(
-                        item.current
-                          ? "text-gray-900 border-pink border-b-2 font-semibold"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                        "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
-                      )}
-                      href={item.href}
-                      key={item.name}
-                      onClick={item.onClick}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
+                  {props.categories?.map(
+                    (item) => (
+                      console.log(item),
+                      (
+                        <Link
+                          className={classNames(
+                            item?.id === router.query.categoryId
+                              ? "text-gray-900 border-b-2 border-pink font-semibold"
+                              : "border-transparent hover:text-gray-700 text-gray-500 hover:border-gray-300",
+                            "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
+                          )}
+                          href={`?categoryId=${item.id}`}
+                          key={item.id}
+                          // onClick={}
+                        >
+                          {item.name}
+                        </Link>
+                      )
+                    ),
+                  )}
                 </div>
               </div>
             </div>
@@ -117,6 +96,13 @@ const PageLayout = (props: Props): ReactElement => {
           {props.children}
         </main>
       </div>
+      {open && (
+        <SettingMenu
+          onClose={handleMenuClosed}
+          open={open}
+          anchorEl={anchorEl}
+        />
+      )}
     </Box>
   );
 };
