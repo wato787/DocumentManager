@@ -23,7 +23,7 @@ const AddCategoryDialog = (props: Props): ReactElement => {
           <DialogTitle className="text-center font-sans">
             カテゴリー追加
           </DialogTitle>
-          <div className="flex flex-col space-y-6 px-8 pb-5">
+          <div className="flex flex-col space-y-6 px-8 pb-5 pt-3">
             <TextField placeholder="カテゴリー名" />
             <div className="flex items-center justify-between">
               <Button
