@@ -53,7 +53,10 @@ const PageLayout = (props: Props): ReactElement => {
                   <MenuIcon />
                 </IconButton>
                 <div>
-                  <Link className="flex items-center gap-x-2" href="/">
+                  <Link
+                    className="flex items-center gap-x-2"
+                    href="?categoryId=All"
+                  >
                     <Image src="/Icon.png" width={32} height={20} alt="logo" />
                     <Typography sx={{ mt: 0.5 }} fontSize={18} variant="h1">
                       Document Manager
@@ -62,26 +65,21 @@ const PageLayout = (props: Props): ReactElement => {
                 </div>
 
                 <div className="flex h-14 space-x-4">
-                  {props.categories?.map(
-                    (item) => (
-                      console.log(item),
-                      (
-                        <Link
-                          className={classNames(
-                            item?.id === router.query.categoryId
-                              ? "text-gray-900 border-b-2 border-pink font-semibold"
-                              : "border-transparent hover:text-gray-700 text-gray-500 hover:border-gray-300",
-                            "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
-                          )}
-                          href={`?categoryId=${item.id}`}
-                          key={item.id}
-                          // onClick={}
-                        >
-                          {item.name}
-                        </Link>
-                      )
-                    ),
-                  )}
+                  {props.categories?.map((item) => (
+                    <Link
+                      className={classNames(
+                        item?.id === router.query.categoryId
+                          ? "text-gray-900 border-b-2 border-pink font-semibold"
+                          : "border-transparent hover:text-gray-700 text-gray-500 hover:border-gray-300",
+                        "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
+                      )}
+                      href={`?categoryId=${item.id}`}
+                      key={item.id}
+                      // onClick={}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
