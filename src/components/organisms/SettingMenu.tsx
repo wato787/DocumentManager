@@ -6,6 +6,7 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { useState } from "react";
 import AddCategoryDialog from "../molucules/dialog/AddCategoryDialog";
 import { ListItemIcon } from "@mui/material";
+import UploadFileDialog from "./fileUpload";
 
 interface Props {
   anchorEl: null | HTMLElement;
@@ -16,6 +17,9 @@ interface Props {
 export default function SettingMenu(props: Props) {
   const [AddCategoryDialogOpen, setAddCategoryDialogOpen] =
     useState<boolean>(false);
+  const [UploadFileDialogOpen, setUploadFileDialogOpen] =
+    useState<boolean>(false);
+
   return (
     <>
       <Menu
@@ -35,7 +39,7 @@ export default function SettingMenu(props: Props) {
 
           <span className=" font-sans text-gray-600">カテゴリー追加</span>
         </MenuItem>
-        <MenuItem onClick={props.onClose}>
+        <MenuItem onClick={(): void => setUploadFileDialogOpen(true)}>
           <ListItemIcon>
             <FileUploadIcon sx={{ color: "gray" }} fontSize="small" />
           </ListItemIcon>
@@ -49,6 +53,12 @@ export default function SettingMenu(props: Props) {
           open={AddCategoryDialogOpen}
           onClose={() => setAddCategoryDialogOpen(false)}
           onComplete={() => props.onClose()}
+        />
+      )}
+      {UploadFileDialogOpen && (
+        <UploadFileDialog
+          open={UploadFileDialogOpen}
+          onClose={(): void => setUploadFileDialogOpen(false)}
         />
       )}
     </>

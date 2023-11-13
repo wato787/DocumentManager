@@ -38,7 +38,7 @@ const AddCategoryDialog = (props: Props): ReactElement => {
             <div className="flex items-center justify-between">
               <Button
                 className="!text-gray-500"
-                color="info"
+                color="inherit"
                 onClick={props.onClose}
                 size="large"
                 sx={{ flex: 1, boxShadow: "none" }}
