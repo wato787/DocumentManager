@@ -15,7 +15,7 @@ const PdfContent = (props: Props): ReactElement => {
         width={200}
         height={400}
       />
-      <div className="bg-pink absolute inset-0 flex items-center justify-center rounded-sm opacity-0 transition duration-300 ease-in-out group-hover:opacity-30">
+      <div className="absolute inset-0 flex items-center justify-center rounded-sm bg-pink opacity-0 transition duration-300 ease-in-out group-hover:opacity-30">
         <span className="text-white">{props.title}</span>
       </div>
       <span className="">{props.title}</span>
