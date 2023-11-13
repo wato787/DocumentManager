@@ -5,12 +5,12 @@ import { type SubmitHandler } from "react-hook-form";
 
 import UploadFileDialogPresenter from "./UploadFileDialogPresenter";
 
-export type UploadTenkaizuFormValues = {
+export type UploadFormValues = {
   fileName: string;
 };
 
-export type UploadTenkaizuFormState = {
-  values: UploadTenkaizuFormValues;
+export type UploadFormState = {
+  values: UploadFormValues;
 };
 
 interface Props {
@@ -34,7 +34,7 @@ const UploadFileDialog = (props: Props): ReactElement => {
   //   return true;
   // }, [tenkaizu]);
 
-  const onSubmit = useCallback<SubmitHandler<UploadTenkaizuFormValues>>(
+  const onSubmit = useCallback<SubmitHandler<UploadFormValues>>(
     async (data) => {
       setLoading(true);
       try {
