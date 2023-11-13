@@ -31,7 +31,6 @@ const UploadFileDialog = (props: Props): ReactElement => {
   //     return false;
   //   }
 
-  //   return true;
   // }, [tenkaizu]);
 
   const onSubmit = useCallback<SubmitHandler<UploadFormValues>>(
