@@ -48,6 +48,7 @@ export default function SettingMenu(props: Props) {
         <AddCategoryDialog
           open={AddCategoryDialogOpen}
           onClose={() => setAddCategoryDialogOpen(false)}
+          onComplete={() => props.onClose()}
         />
       )}
     </>

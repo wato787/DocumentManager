@@ -1,20 +1,27 @@
-import {
-  Dialog,
-  Button,
-  CircularProgress,
-  TextField,
-  DialogTitle,
-} from "@mui/material";
-import classNames from "classnames";
+import { Dialog, Button, TextField, DialogTitle } from "@mui/material";
 import { type ReactElement, useState } from "react";
+import CommonButton from "~/components/atoms/CommonButton";
+import { useCategory } from "~/hooks/trpc/useCategory";
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  onComplete: () => void;
 }
 
 const AddCategoryDialog = (props: Props): ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [categoryName, setCategoryName] = useState<string>("");
+
+  const { addCategory } = useCategory();
+
+  const handleApply = async (): Promise<void> => {
+    setIsLoading(true);
+    await addCategory.mutateAsync({ name: categoryName });
+    setIsLoading(false);
+    props.onClose();
+    props.onComplete();
+  };
 
   return (
     <>
@@ -24,7 +31,10 @@ const AddCategoryDialog = (props: Props): ReactElement => {
             カテゴリー追加
           </DialogTitle>
           <div className="flex flex-col space-y-6 px-8 pb-5 pt-3">
-            <TextField placeholder="カテゴリー名" />
+            <TextField
+              placeholder="カテゴリー名"
+              onChange={(e): void => setCategoryName(e.target.value)}
+            />
             <div className="flex items-center justify-between">
               <Button
                 className="!text-gray-500"
@@ -36,28 +46,9 @@ const AddCategoryDialog = (props: Props): ReactElement => {
               >
                 キャンセル
               </Button>
-              <Button
-                disabled={isLoading}
-                // onClick={async (): Promise<void> => await handleApply()}
-                size="large"
-                sx={{
-                  flex: 1,
-                  boxShadow: "none",
-                  ":hover": { backgroundColor: "#ffc0cb" },
-                }}
-                variant="contained"
-              >
-                <span
-                  className={classNames(isLoading && "opacity-0", "text-white")}
-                >
-                  追加
-                </span>
-                {isLoading && (
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-                    <CircularProgress color="inherit" size="1.2rem" />
-                  </div>
-                )}
-              </Button>
+              <CommonButton disabled={isLoading} onClick={handleApply}>
+                追加
+              </CommonButton>
             </div>
           </div>
         </div>
