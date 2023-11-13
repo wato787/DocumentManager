@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { ReactElement, ReactNode } from "react";
 
 interface Props {
-  disabled: boolean;
+  disabled?: boolean;
   onClick: () => void;
   children: ReactNode;
 }
