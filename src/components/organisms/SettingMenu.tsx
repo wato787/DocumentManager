@@ -1,6 +1,10 @@
-import * as React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+
+import AddIcon from "@mui/icons-material/Add";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { useState } from "react";
+import AddCategoryDialog from "../molucules/dialog/AddCategoryDialog";
 
 interface Props {
   anchorEl: null | HTMLElement;
@@ -9,8 +13,10 @@ interface Props {
 }
 
 export default function SettingMenu(props: Props) {
+  const [AddCategoryDialogOpen, setAddCategoryDialogOpen] =
+    useState<boolean>(false);
   return (
-    <div>
+    <>
       <Menu
         id="basic-menu"
         anchorEl={props.anchorEl}
@@ -21,10 +27,29 @@ export default function SettingMenu(props: Props) {
         }}
         sx={{ mt: 2 }}
       >
-        <MenuItem onClick={props.onClose}>Profile</MenuItem>
-        <MenuItem onClick={props.onClose}>My account</MenuItem>
+        <MenuItem onClick={(): void => setAddCategoryDialogOpen(true)}>
+          <div className="flex items-center gap-x-2.5">
+            <AddIcon sx={{ color: "gray" }} fontSize="small" />
+            <span className=" font-sans text-gray-600">カテゴリー追加</span>
+          </div>
+        </MenuItem>
+        <MenuItem onClick={props.onClose}>
+          <div className="flex items-center gap-x-2.5">
+            <FileUploadIcon sx={{ color: "gray" }} fontSize="small" />
+            <span className=" font-sans text-gray-600">
+              ファイルアップロード
+            </span>
+          </div>
+        </MenuItem>
+
         <MenuItem onClick={props.onClose}>Logout</MenuItem>
       </Menu>
-    </div>
+      {AddCategoryDialogOpen && (
+        <AddCategoryDialog
+          open={AddCategoryDialogOpen}
+          onClose={() => setAddCategoryDialogOpen(false)}
+        />
+      )}
+    </>
   );
 }
