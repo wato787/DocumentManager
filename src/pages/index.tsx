@@ -4,10 +4,10 @@ import { useMemo } from "react";
 import PdfContent from "~/components/molucules/PdfContent";
 import SearchBar from "~/components/organisms/SearchBar";
 import PageHead from "~/components/templates/Head";
-import LoadingScreen from "~/components/templates/LoadingScreen";
 import PageLayout from "~/components/templates/PageLayout";
 import { useCategory } from "~/hooks/trpc/useCategory";
 import usePdfToImage from "~/hooks/usePdfToImage";
+import { Status } from "~/types/status";
 
 const demoArray = new Array(40).fill(0);
 
@@ -20,33 +20,29 @@ export default function Home() {
   const CategoryStatus = getAllCategories.useQuery().status;
 
   const isLoading = useMemo(() => {
-    return CategoryStatus === "loading" && !imgSrc;
+    return CategoryStatus === Status.LOADING && !imgSrc;
   }, [CategoryStatus, imgSrc]);
 
   return (
     <>
       <PageHead />
 
-      {!isLoading ? (
-        <PageLayout categories={categories}>
-          <div className="px-12 pb-6">
-            <div className="pt-6">
-              <SearchBar isSearchInitialized={true} loading={!imgSrc} />
-            </div>
-            <div className="flex w-full flex-wrap items-center justify-between pt-4">
-              {imgSrc && (
-                <>
-                  {demoArray.map((_, index) => (
-                    <PdfContent src={imgSrc} title={"タイトル"} key={index} />
-                  ))}
-                </>
-              )}
-            </div>
+      <PageLayout categories={categories}>
+        <div className="px-12 pb-6">
+          <div className="pt-6">
+            <SearchBar isSearchInitialized={true} loading={isLoading} />
           </div>
-        </PageLayout>
-      ) : (
-        <LoadingScreen />
-      )}
+          <div className="flex w-full flex-wrap items-center justify-between pt-4">
+            {imgSrc && (
+              <>
+                {demoArray.map((_, index) => (
+                  <PdfContent src={imgSrc} title={"タイトル"} key={index} />
+                ))}
+              </>
+            )}
+          </div>
+        </div>
+      </PageLayout>
     </>
   );
 }
