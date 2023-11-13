@@ -6,6 +6,7 @@ interface Props {
   disabled?: boolean;
   onClick: () => void;
   children: ReactNode;
+  small?: boolean;
 }
 
 const CommonButton = (props: Props): ReactElement => {
@@ -15,7 +16,7 @@ const CommonButton = (props: Props): ReactElement => {
       onClick={async (): Promise<void> => await props.onClick()}
       size="large"
       sx={{
-        flex: 1,
+        flex: props.small ? "" : 1,
         boxShadow: "none",
         ":hover": { backgroundColor: "#ffc0cb" },
       }}
