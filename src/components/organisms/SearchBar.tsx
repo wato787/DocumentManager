@@ -16,7 +16,7 @@ const SearchBar = (props: Props): ReactElement => {
       <div
         className={classNames(
           " mb-3 flex flex-col  pb-3",
-          !props.loading && "border-gray-200 border-b-2",
+          !props.loading && "border-b-2 border-gray-200",
         )}
       >
         <div className=" flex space-x-3  pb-3">
