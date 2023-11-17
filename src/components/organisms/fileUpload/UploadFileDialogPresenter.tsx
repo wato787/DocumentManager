@@ -14,7 +14,6 @@ import CommonButton from "~/components/atoms/CommonButton";
 import FileUploadArea from "~/components/molucules/FileUploadArea";
 
 interface Props {
-  // productId: string;
   open: boolean;
   // isError: boolean;
   loading: boolean;
