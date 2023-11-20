@@ -40,3 +40,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+# pdf.worker.mjs
+public/pdf.worker.mjs
