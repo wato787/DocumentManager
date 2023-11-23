@@ -4,14 +4,21 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { Button } from "@mui/material";
 import classNames from "classnames";
 import type { ReactElement } from "react";
-import type { DropzoneInputProps, DropzoneRootProps } from "react-dropzone";
+import type {
+  DropzoneInputProps,
+  DropzoneRootProps,
+  FileWithPath,
+} from "react-dropzone";
 
 interface Props {
-  files: JSX.Element[];
+  files: FileWithPath[];
   isDragActive: boolean;
   getRootProps: <T extends DropzoneRootProps>(props?: T) => T;
   getInputProps: <T extends DropzoneInputProps>(props?: T) => T;
-  onDelete: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onDelete: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    name: string,
+  ) => void;
 }
 
 const FileUploadAreaPresenter = (props: Props): ReactElement => {
@@ -48,7 +55,7 @@ const FileUploadAreaPresenter = (props: Props): ReactElement => {
                 </span>
                 <div className="flex flex-col items-center space-y-1">
                   <div className="flex space-x-1 text-sm text-gray-400 md:text-base">
-                    <span className="text-primary-500">Upload a file </span>
+                    <span className=" text-pink">Upload a file </span>
                     <span> or drag and drop</span>
                   </div>
                   <div className="text-xs text-gray-400">
@@ -65,19 +72,26 @@ const FileUploadAreaPresenter = (props: Props): ReactElement => {
                 <InsertDriveFileIcon fontSize="inherit" />
               </span>
             </div>
-            <div className="flex items-center justify-between space-x-1 bg-gray-100 p-5 text-gray-400">
-              <ul className="font-bold text-gray-400">{props.files}</ul>
-              <Button
-                className="flex-shrink-0"
-                onClick={props.onDelete}
-                size="small"
-                variant="outlined"
-              >
-                <div className="flex items-center space-x-1">
-                  <DeleteOutlineIcon fontSize="small" />
-                  <span>削除</span>
+            <div className="flex flex-wrap items-center   bg-gray-100 p-5 text-gray-400">
+              {props.files.map((file, index) => (
+                <div
+                  className="flex w-1/2 items-center justify-between gap-x-2 p-2"
+                  key={`${file.name}_${index}`}
+                >
+                  <span className="text-sm sm:text-base">{file.name}</span>
+                  <Button
+                    className="flex-shrink-0"
+                    onClick={(e) => props.onDelete(e, file.name)}
+                    size="small"
+                    variant="outlined"
+                  >
+                    <div className="flex items-center space-x-1">
+                      <DeleteOutlineIcon fontSize="small" />
+                      <span>削除</span>
+                    </div>
+                  </Button>
                 </div>
-              </Button>
+              ))}
             </div>
           </aside>
         )}

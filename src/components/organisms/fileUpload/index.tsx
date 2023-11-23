@@ -1,17 +1,8 @@
 import type { FileWithPath } from "file-selector";
 import type { ReactElement } from "react";
 import { useCallback, useState } from "react";
-import { type SubmitHandler } from "react-hook-form";
 
 import UploadFileDialogPresenter from "./UploadFileDialogPresenter";
-
-export type UploadFormValues = {
-  fileName: string;
-};
-
-export type UploadFormState = {
-  values: UploadFormValues;
-};
 
 interface Props {
   open: boolean;
@@ -21,51 +12,57 @@ interface Props {
 const UploadFileDialog = (props: Props): ReactElement => {
   const [loading, setLoading] = useState(false);
 
-  const [pdfFile, setPdfFile] = useState<FileWithPath | undefined>();
+  const [pdfFiles, setPdfFiles] = useState<FileWithPath[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
 
-  // const validateTenkaizu = useCallback((): boolean => {
-  //   if (tenkaizu === undefined) {
-  //     setIsError(true);
+  const validate = useCallback((): boolean => {
+    if (pdfFiles === undefined) {
+      setIsError(true);
 
-  //     return false;
-  //   }
+      return false;
+    }
 
-  // }, [tenkaizu]);
+    return true;
+  }, [pdfFiles]);
 
-  const onSubmit = useCallback<SubmitHandler<UploadFormValues>>(
-    async (data) => {
-      setLoading(true);
-      try {
-      } catch (error) {
-        console.log(error);
-      }
-      setLoading(false);
-    },
-    [],
-  );
+  const handleReset = useCallback(async () => {
+    setPdfFiles([]);
+  }, []);
 
-  // const submit = (): void => {
-  //   validateTenkaizu();
-  //   handleSubmit(onSubmit)();
-  // };
+  const onSubmit = useCallback(async () => {
+    if (!validate()) {
+      return;
+    }
+    setLoading(true);
+    try {
+      console.log(pdfFiles);
+      handleReset();
+      props.onClose();
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  }, [handleReset, pdfFiles, validate, props]);
 
-  // const onTenkaizuAdded = useCallback((newTenkaizu: FileWithPath) => {
-  //   setIsError(false);
-  //   setTenkaizu(newTenkaizu);
-  // }, []);
+  const onFileAdded = useCallback((file: FileWithPath) => {
+    setIsError(false);
+    setPdfFiles((prev) => [...prev, file]);
+  }, []);
+
+  const onFileDeleted = useCallback(() => {
+    setPdfFiles([]);
+  }, []);
 
   return (
     <UploadFileDialogPresenter
       onClose={props.onClose}
-      // isError={isError}
+      isError={isError}
       loading={loading}
-      // onTenkaizuAdded={onTenkaizuAdded}
-      // onTenkaizuDeleted={onTenkaizuDeleted}
+      onFileAdded={onFileAdded}
+      onFileDeleted={onFileDeleted}
       open={props.open}
-      // productId={props.id}
-      // submit={submit}
-      pdfFile={pdfFile}
+      submit={onSubmit}
+      pdfFiles={pdfFiles}
     />
   );
 };

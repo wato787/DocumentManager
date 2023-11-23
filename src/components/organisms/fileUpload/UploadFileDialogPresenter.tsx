@@ -4,6 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   LinearProgress,
 } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -15,13 +16,13 @@ import FileUploadArea from "~/components/molucules/FileUploadArea";
 
 interface Props {
   open: boolean;
-  // isError: boolean;
+  isError: boolean;
   loading: boolean;
-  pdfFile: FileWithPath | undefined;
+  pdfFiles: FileWithPath[];
   onClose: () => void;
-  // onTenkaizuAdded: (newTenkaizu: FileWithPath) => void;
-  // onTenkaizuDeleted: () => void;
-  // submit: () => void;
+  onFileAdded: (file: FileWithPath) => void;
+  onFileDeleted: () => void;
+  submit: () => void;
 }
 
 const UploadFileDialogPresenter = (props: Props): ReactElement => {
@@ -42,14 +43,13 @@ const UploadFileDialogPresenter = (props: Props): ReactElement => {
         <DialogTitle id="scroll-dialog-title">ファイルを添付</DialogTitle>
         <DialogContent dividers={true} id="scroll-dialog-content">
           <FileUploadArea
-            defaultFile={props.pdfFile}
-            onDelete={props.onClose}
-            onDrop={props.onClose}
+            onDelete={props.onFileDeleted}
+            onDrop={props.onFileAdded}
           />
 
-          {/* {props.isError && (
+          {props.isError && (
             <FormHelperText error>ファイルを添付してください。</FormHelperText>
-          )} */}
+          )}
         </DialogContent>
         <DialogActions sx={{ padding: 0 }}>
           <Box sx={{ width: "100%" }}>
@@ -63,9 +63,9 @@ const UploadFileDialogPresenter = (props: Props): ReactElement => {
               <CommonButton
                 small
                 disabled={props.loading}
-                onClick={props.onClose}
+                onClick={props.submit}
               >
-                追加
+                次へ
               </CommonButton>
             </div>
           </Box>

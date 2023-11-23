@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import PdfContent from "~/components/molucules/PdfContent";
 import SearchBar from "~/components/organisms/SearchBar";
 import PageHead from "~/components/templates/Head";
@@ -16,8 +16,9 @@ export default function Home() {
   const imgSrc = usePdfToImage("/demo.pdf");
 
   const { getAllCategories } = useCategory();
+  const CategoryStatus = getAllCategories.useQuery().status;
 
-  const categories = useMemo(() => {
+  const getCategories = useCallback(() => {
     const res = getAllCategories.useQuery().data;
     if (!Array.isArray(res)) return [];
     const newData = [...res];
@@ -32,9 +33,7 @@ export default function Home() {
     return newData;
   }, [getAllCategories, session?.user.id]);
 
-  const CategoryStatus = getAllCategories.useQuery().status;
-
-  const isLoading = useMemo(() => {
+  const isLoading = useMemo((): boolean => {
     return CategoryStatus === Status.LOADING && !imgSrc;
   }, [CategoryStatus, imgSrc]);
 
@@ -42,7 +41,7 @@ export default function Home() {
     <>
       <PageHead />
 
-      <PageLayout categories={categories}>
+      <PageLayout categories={getCategories()}>
         <div className="px-12 pb-6">
           <div className="pt-6">
             <SearchBar isSearchInitialized={true} loading={isLoading} />

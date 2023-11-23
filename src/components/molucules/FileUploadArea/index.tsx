@@ -1,11 +1,10 @@
 import type { FileWithPath } from "file-selector";
 import type { ReactElement } from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import FileUploadAreaPresenter from "./FileUploadAreaPresenter";
 
 interface Props {
-  defaultFile?: FileWithPath | undefined;
   onDrop: (file: FileWithPath) => void;
   onDelete: () => void;
 }
@@ -15,7 +14,7 @@ const FileUploadArea = (props: Props): ReactElement => {
 
   const onDrop = useCallback(
     async (files: FileWithPath[]) => {
-      setFiles([...files, ...files]);
+      setFiles((prev) => [...prev, ...files]);
       files.forEach(props.onDrop);
     },
     [props.onDrop],
@@ -23,7 +22,7 @@ const FileUploadArea = (props: Props): ReactElement => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    maxFiles: 1,
+    multiple: true,
     maxSize: 15 * 1000000, // 15MB
     accept: {
       "image/*": [".jpeg", ".png"],
@@ -31,20 +30,10 @@ const FileUploadArea = (props: Props): ReactElement => {
     },
   });
 
-  const fileList = useMemo(
-    (): JSX.Element[] =>
-      (props.defaultFile ? [props.defaultFile] : files).map((file, index) => (
-        <li className="text-sm sm:text-base" key={`${file.name}_${index}`}>
-          {file.name}
-        </li>
-      )),
-    [files, props.defaultFile],
-  );
-
   const handleOnDelete = useCallback(
-    (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    (e: React.MouseEvent<HTMLElement, MouseEvent>, name: string) => {
       props.onDelete();
-      setFiles([]);
+      setFiles((prev) => prev.filter((file) => file.name !== name));
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
     },
@@ -53,7 +42,7 @@ const FileUploadArea = (props: Props): ReactElement => {
 
   return (
     <FileUploadAreaPresenter
-      files={fileList}
+      files={files}
       getInputProps={getInputProps}
       getRootProps={getRootProps}
       isDragActive={isDragActive}
