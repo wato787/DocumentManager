@@ -40,6 +40,8 @@ const UploadFileDialog = (props: Props): ReactElement => {
     try {
       const req = [
         {
+          name: "dammy",
+          categoryId: "1",
           pdfPath: "dammy",
           jpgPath: "dammy",
         },
