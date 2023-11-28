@@ -14,6 +14,7 @@ const demoArray = new Array(40).fill(0);
 export default function Home() {
   const { data: session } = useSession();
   const imgSrc = usePdfToImage("/demo.pdf");
+  console.log(imgSrc);
 
   const { getAllCategories } = useCategory();
   const CategoryStatus = getAllCategories.useQuery().status;

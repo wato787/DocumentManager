@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { useCallback, useState } from "react";
 
 import UploadFileDialogPresenter from "./UploadFileDialogPresenter";
+import { useFile } from "~/hooks/trpc/useFile";
 
 interface Props {
   open: boolean;
@@ -14,6 +15,8 @@ const UploadFileDialog = (props: Props): ReactElement => {
 
   const [pdfFiles, setPdfFiles] = useState<FileWithPath[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
+
+  const { addFile } = useFile();
 
   const validate = useCallback((): boolean => {
     if (pdfFiles === undefined) {
@@ -35,14 +38,20 @@ const UploadFileDialog = (props: Props): ReactElement => {
     }
     setLoading(true);
     try {
-      console.log(pdfFiles);
+      const req = [
+        {
+          pdfPath: "dammy",
+          jpgPath: "dammy",
+        },
+      ];
+      await addFile.mutateAsync(req);
       handleReset();
       props.onClose();
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
-  }, [handleReset, pdfFiles, validate, props]);
+  }, [handleReset, props, validate, addFile]);
 
   const onFileAdded = useCallback((file: FileWithPath) => {
     setIsError(false);
