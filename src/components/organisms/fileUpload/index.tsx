@@ -32,21 +32,23 @@ const UploadFileDialog = (props: Props): ReactElement => {
     setPdfFiles([]);
   }, []);
 
+  // const req = pdfFiles.map((file) => {
+  //   const jpgPath = usePdfToImage(file.path as string);
+  //   return {
+  //     name: file.name,
+  //     pdfPath: file.path as string,
+  //     jpgPath: jpgPath,
+  //     categoryId: "1",
+  //   };
+  // });
+
   const onSubmit = useCallback(async () => {
     if (!validate()) {
       return;
     }
     setLoading(true);
     try {
-      const req = [
-        {
-          name: "dammy",
-          categoryId: "1",
-          pdfPath: "dammy",
-          jpgPath: "dammy",
-        },
-      ];
-      await addFile.mutateAsync(req);
+      // await addFile.mutateAsync(req);
       handleReset();
       props.onClose();
     } catch (error) {
