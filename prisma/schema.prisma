@@ -68,8 +68,7 @@ model Category {
 model File {
   id        String   @id @default(cuid())
   name      String
-  pdfPath      String
-  jpgPath      String
+  path      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String

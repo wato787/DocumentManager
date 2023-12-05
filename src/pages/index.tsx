@@ -1,20 +1,15 @@
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/react";
-import { useCallback, useMemo } from "react";
-import PdfContent from "~/components/molucules/PdfContent";
+import { useCallback } from "react";
 import SearchBar from "~/components/organisms/SearchBar";
 import PageHead from "~/components/templates/Head";
 import PageLayout from "~/components/templates/PageLayout";
 import { useCategory } from "~/hooks/trpc/useCategory";
-import usePdfToImage from "~/hooks/usePdfToImage";
-import { Status } from "~/types/status";
 
 const demoArray = new Array(40).fill(0);
 
 export default function Home() {
   const { data: session } = useSession();
-  const imgSrc = usePdfToImage("/demo.pdf");
-  console.log(imgSrc);
 
   const { getAllCategories } = useCategory();
   const CategoryStatus = getAllCategories.useQuery().status;
@@ -34,9 +29,9 @@ export default function Home() {
     return newData;
   }, [getAllCategories, session?.user.id]);
 
-  const isLoading = useMemo((): boolean => {
-    return CategoryStatus === Status.LOADING && !imgSrc;
-  }, [CategoryStatus, imgSrc]);
+  // const isLoading = useMemo((): boolean => {
+  //   return CategoryStatus === Status.LOADING && !imgSrc;
+  // }, [CategoryStatus, imgSrc]);
 
   return (
     <>
@@ -45,16 +40,16 @@ export default function Home() {
       <PageLayout categories={getCategories()}>
         <div className="px-12 pb-6">
           <div className="pt-6">
-            <SearchBar isSearchInitialized={true} loading={isLoading} />
+            <SearchBar isSearchInitialized={true} loading={false} />
           </div>
           <div className="flex w-full flex-wrap items-center justify-between pt-4">
-            {imgSrc && (
+            {/* {imgSrc && (
               <>
                 {demoArray.map((_, index) => (
                   <PdfContent src={imgSrc} title={"タイトル"} key={index} />
                 ))}
               </>
-            )}
+            )} */}
           </div>
         </div>
       </PageLayout>

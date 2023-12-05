@@ -9,23 +9,22 @@ export const filesRouter = createTRPCRouter({
         z.object({
           name: z.string(),
           categoryId: z.string(),
-          pdfPath: z.string(),
-          jpgPath: z.string(),
+          path: z.string(),
         }),
       ),
     )
     .mutation(async ({ ctx, input }) => {
       const file = input.map(async (file) => {
-        const { name, categoryId, pdfPath, jpgPath } = file;
+        const { name, categoryId, path } = file;
         const newFile = await ctx.db.file.create({
           data: {
             name,
             categoryId,
-            pdfPath,
-            jpgPath,
+            path,
             userId: ctx.session.user.id,
           },
         });
+
         return newFile;
       });
 
