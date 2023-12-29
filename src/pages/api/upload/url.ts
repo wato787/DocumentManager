@@ -14,9 +14,9 @@ const handler = async (
     query: { filePath, publicId },
   } = req;
 
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
-  const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY ?? "";
-  const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET ?? "";
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME ?? "";
+  const apiKey = process.env.CLOUDINARY_API_KEY ?? "";
+  const apiSecret = process.env.CLOUDINARY_API_SECRET ?? "";
 
   cloudinary.config({
     cloud_name: cloudName,
@@ -33,7 +33,7 @@ const handler = async (
         timestamp,
         folder,
       },
-      process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET ?? "",
+      process.env.CLOUDINARY_API_SECRET ?? "",
     );
     url = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload?upload_preset=&api_key=${apiKey}&timestamp=${timestamp}&signature=${signature}&folder=${folder}`;
   } else {
@@ -47,7 +47,7 @@ const handler = async (
         invalidate: true,
         folder,
       },
-      process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET ?? "",
+      process.env.CLOUDINARY_API_SECRET ?? "",
     );
     url = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload?public_id=${publicId}&upload_preset=&api_key=${apiKey}&timestamp=${timestamp}&overwrite=true&unique_filename=false&use_filename=false&invalidate=true&signature=${signature}&folder=${folder}`;
   }
