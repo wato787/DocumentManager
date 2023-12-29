@@ -6,8 +6,6 @@ import PageHead from "~/components/templates/Head";
 import PageLayout from "~/components/templates/PageLayout";
 import { useCategory } from "~/hooks/trpc/useCategory";
 
-const demoArray = new Array(40).fill(0);
-
 export default function Home() {
   const { data: session } = useSession();
 
