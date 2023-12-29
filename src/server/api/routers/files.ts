@@ -9,23 +9,39 @@ export const filesRouter = createTRPCRouter({
         z.object({
           name: z.string(),
           path: z.string(),
+          pdfUrl: z.string(),
+          jpgUrl: z.string(),
         }),
       ),
     )
     .mutation(async ({ ctx, input }) => {
-      const file = input.map(async (file) => {
-        const { name, path } = file;
-        const newFile = await ctx.db.file.create({
-          data: {
-            name,
-            path,
-            userId: ctx.session.user.id,
-          },
-        });
+      const files = await Promise.all(
+        input.map(async (file) => {
+          const { name, path, pdfUrl, jpgUrl } = file;
+          const newFile = await ctx.db.file.create({
+            data: {
+              name,
+              path,
+              pdfUrl,
+              jpgUrl,
+              userId: ctx.session.user.id,
+            },
+          });
 
-        return newFile;
-      });
+          return newFile;
+        }),
+      );
 
-      return file;
+      return files;
     }),
+
+  get: protectedProcedure.query(async ({ ctx }) => {
+    const files = await ctx.db.file.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    return files;
+  }),
 });

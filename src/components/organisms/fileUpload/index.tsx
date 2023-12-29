@@ -3,22 +3,28 @@ import type { ReactElement } from "react";
 import { useCallback, useState } from "react";
 
 import UploadFileDialogPresenter from "./UploadFileDialogPresenter";
+import { useCloudinaryUpload } from "~/hooks/useCloudinaryUpload";
+import { useFile } from "~/hooks/trpc/useFile";
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-export interface AddFileRequest {
+export interface AddFilesRequest {
   name: string;
   path: string;
-  categoryId: string;
+  pdfUrl: string;
+  jpgUrl: string;
 }
 
 const UploadFileDialog = (props: Props): ReactElement => {
   const [loading, setLoading] = useState(false);
   const [pdfFiles, setPdfFiles] = useState<FileWithPath[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
+
+  const { uploadFiles } = useCloudinaryUpload();
+  const { addFiles } = useFile();
 
   const validate = useCallback((): boolean => {
     if (pdfFiles === undefined) {
@@ -40,16 +46,25 @@ const UploadFileDialog = (props: Props): ReactElement => {
     }
     setLoading(true);
     try {
-      const cloudinaryUpload = async () => {};
-      //TODO cloudinaryにアップロードしてurlと1枚目の画像を取得してdbに保存
-      // await addFile.mutateAsync(req);
+      const urls = await uploadFiles(pdfFiles);
+      const req: AddFilesRequest[] = pdfFiles.map((file, index) => {
+        return {
+          name: file.name,
+          path: file.path as string,
+          pdfUrl: urls.pdfUrls[index] as string,
+          jpgUrl: urls.jpgUrls[index] as string,
+        };
+      });
+
+      await addFiles.mutateAsync(req);
+
       handleReset();
       props.onClose();
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
-  }, [validate, props, handleReset]);
+  }, [pdfFiles, props, validate, uploadFiles, handleReset, addFiles]);
 
   const onFileAdded = useCallback((file: FileWithPath) => {
     setIsError(false);

@@ -1,16 +1,20 @@
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import PdfContent from "~/components/molucules/PdfContent";
 import SearchBar from "~/components/organisms/SearchBar";
 import PageHead from "~/components/templates/Head";
 import PageLayout from "~/components/templates/PageLayout";
 import { useCategory } from "~/hooks/trpc/useCategory";
+import { useFile } from "~/hooks/trpc/useFile";
+import { Status } from "~/types/status";
 
 export default function Home() {
   const { data: session } = useSession();
-
   const { getAllCategories } = useCategory();
-  const CategoryStatus = getAllCategories.useQuery().status;
+  const { getFiles } = useFile();
+
+  const files = getFiles.useQuery().data;
 
   const getCategories = useCallback(() => {
     const res = getAllCategories.useQuery().data;
@@ -27,27 +31,34 @@ export default function Home() {
     return newData;
   }, [getAllCategories, session?.user.id]);
 
-  // const isLoading = useMemo((): boolean => {
-  //   return CategoryStatus === Status.LOADING && !imgSrc;
-  // }, [CategoryStatus, imgSrc]);
+  const isLoading = useMemo((): boolean => {
+    const fileStatus = getFiles.useQuery().status;
+    const categoryStatus = getAllCategories.useQuery().status;
+    return fileStatus === Status.LOADING || categoryStatus === Status.LOADING;
+  }, [getFiles, getAllCategories]);
 
   return (
     <>
       <PageHead />
 
-      <PageLayout categories={getCategories()}>
+      <PageLayout categories={getCategories()} loading={isLoading}>
         <div className="px-12 pb-6">
           <div className="pt-6">
             <SearchBar isSearchInitialized={true} loading={false} />
           </div>
-          <div className="flex w-full flex-wrap items-center justify-between pt-4">
-            {/* {imgSrc && (
+          <div className="flex w-full flex-wrap gap-4 pt-4">
+            {files && (
               <>
-                {demoArray.map((_, index) => (
-                  <PdfContent src={imgSrc} title={"タイトル"} key={index} />
+                {files.map((file, index) => (
+                  <PdfContent
+                    jpgUrl={file.jpgUrl}
+                    pdfUrl={file.pdfUrl}
+                    title={file.name}
+                    key={index}
+                  />
                 ))}
               </>
-            )} */}
+            )}
           </div>
         </div>
       </PageLayout>
