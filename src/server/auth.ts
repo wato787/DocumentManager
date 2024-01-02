@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  secret: process.env.NEXT_PUBLIC_SECRET,
+  secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(db),
   providers: [
     GoogleProvider({
