@@ -1,8 +1,15 @@
 import { FileWithPath } from "react-dropzone";
 
 export type Urls = {
-  pdfUrls: string[];
-  jpgUrls: string[];
+  pdfUrls: UrlsType[];
+  jpgUrls: UrlsType[];
+};
+
+export type UrlsType = {
+  name: string;
+  path: string;
+  pdfUrl?: string;
+  jpgUrl?: string;
 };
 
 export const useCloudinaryUpload = () => {
@@ -44,8 +51,8 @@ export const useCloudinaryUpload = () => {
   };
 
   const uploadFiles = async (files: FileWithPath[]): Promise<Urls> => {
-    const pdfUrls: string[] = [];
-    const jpgUrls: string[] = [];
+    const pdfUrls: UrlsType[] = [];
+    const jpgUrls: UrlsType[] = [];
     await Promise.all(
       files.map(async (file) => {
         const formData = new FormData();
@@ -59,9 +66,18 @@ export const useCloudinaryUpload = () => {
             body: formData,
           });
           const data = await response.json();
-          pdfUrls.push(data.secure_url);
-          const jpgUrl = await getJPGUrl(data.secure_url);
-          jpgUrls.push(jpgUrl);
+          const pdfUrl = data.secure_url;
+          pdfUrls.push({
+            name: file.name,
+            path: filePath,
+            pdfUrl,
+          });
+          const jpgUrl = await getJPGUrl(pdfUrl);
+          jpgUrls.push({
+            name: file.name,
+            path: filePath,
+            jpgUrl,
+          });
         } catch (error) {
           throw new Error("Failed to upload to Cloudinary");
         }

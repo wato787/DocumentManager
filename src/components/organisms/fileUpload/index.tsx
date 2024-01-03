@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { useCallback, useState } from "react";
 
 import UploadFileDialogPresenter from "./UploadFileDialogPresenter";
-import { useCloudinaryUpload } from "~/hooks/useCloudinaryUpload";
+import { Urls, useCloudinaryUpload } from "~/hooks/useCloudinaryUpload";
 import { useFile } from "~/hooks/trpc/useFile";
 
 interface Props {
@@ -36,7 +36,7 @@ const UploadFileDialog = (props: Props): ReactElement => {
     return true;
   }, [pdfFiles]);
 
-  const handleReset = useCallback(async () => {
+  const handleReset = useCallback(() => {
     setPdfFiles([]);
   }, []);
 
@@ -46,13 +46,18 @@ const UploadFileDialog = (props: Props): ReactElement => {
     }
     setLoading(true);
     try {
-      const urls = await uploadFiles(pdfFiles);
-      const req: AddFilesRequest[] = pdfFiles.map((file, index) => {
+      const urls: Urls = await uploadFiles(pdfFiles);
+
+      const req: AddFilesRequest[] = pdfFiles.map((file) => {
         return {
           name: file.name,
           path: file.path as string,
-          pdfUrl: urls.pdfUrls[index] as string,
-          jpgUrl: urls.jpgUrls[index] as string,
+          pdfUrl:
+            urls.pdfUrls.find((url) => url.name.includes(file.name))?.pdfUrl ||
+            "",
+          jpgUrl:
+            urls.jpgUrls.find((url) => url.name.includes(file.name))?.jpgUrl ||
+            "",
         };
       });
 
