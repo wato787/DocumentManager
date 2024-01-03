@@ -45,7 +45,7 @@ export default function Home() {
       <PageLayout categories={getCategories()} loading={isLoading}>
         <div className="px-12 pb-6">
           <div className="pt-6">
-            <SearchBar isSearchInitialized={true} loading={false} />
+            <SearchBar isSearchInitialized={true} />
           </div>
           <div className="flex w-full flex-wrap gap-4 pt-4">
             {files && (
