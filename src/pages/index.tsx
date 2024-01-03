@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import { useCallback, useMemo } from "react";
+import { Toaster } from "react-hot-toast";
 import PdfContent from "~/components/molucules/PdfContent";
 import SearchBar from "~/components/organisms/SearchBar";
 import PageHead from "~/components/templates/Head";
@@ -43,6 +44,7 @@ export default function Home() {
       <PageHead />
 
       <PageLayout categories={getCategories()} loading={isLoading}>
+        <Toaster />
         <div className="px-12 pb-6">
           <div className="pt-6">
             <SearchBar isSearchInitialized={true} />
