@@ -7,6 +7,7 @@ import { useState } from "react";
 import AddCategoryDialog from "../molucules/dialog/AddCategoryDialog";
 import { ListItemIcon } from "@mui/material";
 import UploadFileDialog from "./fileUpload";
+import { signOut } from "next-auth/react";
 
 interface Props {
   anchorEl: null | HTMLElement;
@@ -19,6 +20,10 @@ export default function SettingMenu(props: Props) {
     useState<boolean>(false);
   const [UploadFileDialogOpen, setUploadFileDialogOpen] =
     useState<boolean>(false);
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <>
@@ -46,7 +51,7 @@ export default function SettingMenu(props: Props) {
           <span className=" font-sans text-gray-600">ファイルアップロード</span>
         </MenuItem>
 
-        <MenuItem onClick={props.onClose}>Logout</MenuItem>
+        <MenuItem onClick={handleSignOut}>Logout</MenuItem>
       </Menu>
       {AddCategoryDialogOpen && (
         <AddCategoryDialog
