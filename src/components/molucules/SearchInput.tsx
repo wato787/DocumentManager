@@ -1,7 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { InputAdornment, TextField } from "@mui/material";
 import type { ReactElement } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -49,17 +49,17 @@ const SearchInput = (props: Props): ReactElement => {
   //   })();
   // }, [runSubmit, applySearch]);
 
-  useEffect(() => {
-    if (!props.isSearchInitialized) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!props.isSearchInitialized) {
+  //     return;
+  //   }
 
-    // if (getValues("keyword") === keyword) {
-    //   return;
-    // }
+  // if (getValues("keyword") === keyword) {
+  //   return;
+  // }
 
-    // setValue("keyword", keyword || "");
-  }, [props.isSearchInitialized, getValues, setValue]);
+  // setValue("keyword", keyword || "");
+  // }, [props.isSearchInitialized, getValues, setValue]);
 
   return (
     // <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,7 +79,7 @@ const SearchInput = (props: Props): ReactElement => {
               ),
             }}
             autoComplete="off"
-            className="bg-gray-200 rounded-sm"
+            className="rounded-sm bg-gray-200"
             fullWidth
             // onBlur={onBlur}
             placeholder="検索"

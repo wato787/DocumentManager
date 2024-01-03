@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { Toaster } from "react-hot-toast";
 import PdfContent from "~/components/molucules/PdfContent";
 import SearchBar from "~/components/organisms/SearchBar";
@@ -33,7 +33,7 @@ export default function Home() {
     return newData;
   }, [getAllCategories, session?.user.id]);
 
-  const isLoading = useMemo((): boolean => {
+  const isLoading = useCallback((): boolean => {
     const fileStatus = getFiles.useQuery().status;
     const categoryStatus = getAllCategories.useQuery().status;
     return fileStatus === Status.LOADING || categoryStatus === Status.LOADING;
@@ -43,7 +43,7 @@ export default function Home() {
     <>
       <PageHead />
 
-      <PageLayout categories={getCategories()} loading={isLoading}>
+      <PageLayout categories={getCategories()} loading={isLoading()}>
         <Toaster />
         <div className="px-12 pb-6">
           <div className="pt-6">
