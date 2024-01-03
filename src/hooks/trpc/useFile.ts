@@ -7,6 +7,9 @@ export const useFile = () => {
     onSuccess: () => {
       toast.success("ファイルを追加しました");
     },
+    onError: () => {
+      toast.error("ファイルの追加に失敗しました");
+    },
   });
 
   return { addFiles, getFiles };

@@ -7,6 +7,9 @@ export const useCategory = () => {
     onSuccess: () => {
       toast.success("カテゴリを追加しました");
     },
+    onError: () => {
+      toast.error("カテゴリの追加に失敗しました");
+    },
   });
 
   return { getAllCategories, addCategory };
