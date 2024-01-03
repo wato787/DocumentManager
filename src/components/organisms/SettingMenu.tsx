@@ -8,7 +8,7 @@ import AddCategoryDialog from "../molucules/dialog/AddCategoryDialog";
 import { ListItemIcon } from "@mui/material";
 import UploadFileDialog from "./fileUpload";
 import { signOut } from "next-auth/react";
-
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 interface Props {
   anchorEl: null | HTMLElement;
   open: boolean;
@@ -51,7 +51,12 @@ export default function SettingMenu(props: Props) {
           <span className=" font-sans text-gray-600">ファイルアップロード</span>
         </MenuItem>
 
-        <MenuItem onClick={handleSignOut}>Logout</MenuItem>
+        <MenuItem onClick={handleSignOut}>
+          <ListItemIcon>
+            <ExitToAppIcon sx={{ color: "gray" }} fontSize="small" />
+          </ListItemIcon>
+          <span className=" font-sans text-gray-600">ログアウト</span>
+        </MenuItem>
       </Menu>
       {AddCategoryDialogOpen && (
         <AddCategoryDialog
