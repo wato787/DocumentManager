@@ -4,11 +4,7 @@ import * as React from "react";
 
 import SearchInput from "../molucules/SearchInput";
 
-interface Props {
-  isSearchInitialized: boolean;
-}
-
-const SearchBar = (props: Props): ReactElement => {
+const SearchBar = (): ReactElement => {
   return (
     <>
       <div
@@ -18,7 +14,7 @@ const SearchBar = (props: Props): ReactElement => {
         )}
       >
         <div className=" flex space-x-3  pb-3">
-          <SearchInput isSearchInitialized={props.isSearchInitialized} />
+          <SearchInput />
           <div className={classNames("text-gray-300 opacity-80")}></div>
         </div>
         {/* <SearchFilterChipsBar /> */}

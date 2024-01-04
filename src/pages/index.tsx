@@ -47,7 +47,7 @@ export default function Home() {
         <Toaster />
         <div className="px-12 pb-6">
           <div className="pt-6">
-            <SearchBar isSearchInitialized={true} />
+            <SearchBar />
           </div>
           <div className="flex w-full flex-wrap gap-4 pt-4">
             {files && (
