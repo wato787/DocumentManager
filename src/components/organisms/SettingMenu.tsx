@@ -69,6 +69,7 @@ export default function SettingMenu(props: Props) {
         <UploadFileDialog
           open={UploadFileDialogOpen}
           onClose={(): void => setUploadFileDialogOpen(false)}
+          onComplete={() => props.onClose()}
         />
       )}
     </>

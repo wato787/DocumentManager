@@ -9,6 +9,7 @@ import { useFile } from "~/hooks/trpc/useFile";
 interface Props {
   open: boolean;
   onClose: () => void;
+  onComplete: () => void;
 }
 
 export interface AddFilesRequest {
@@ -24,7 +25,8 @@ const UploadFileDialog = (props: Props): ReactElement => {
   const [isError, setIsError] = useState<boolean>(false);
 
   const { uploadFiles } = useCloudinaryUpload();
-  const { addFiles } = useFile();
+  const { addFiles, getFiles } = useFile();
+  const { refetch } = getFiles.useQuery();
 
   const validate = useCallback((): boolean => {
     if (pdfFiles === undefined) {
@@ -61,15 +63,16 @@ const UploadFileDialog = (props: Props): ReactElement => {
         };
       });
 
-      await addFiles.mutateAsync(req);
+      await addFiles.mutateAsync(req).then(() => refetch());
 
       handleReset();
       props.onClose();
+      props.onComplete();
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
-  }, [pdfFiles, props, validate, uploadFiles, handleReset, addFiles]);
+  }, [pdfFiles, props, validate, uploadFiles, handleReset, addFiles, refetch]);
 
   const onFileAdded = useCallback((file: FileWithPath) => {
     setIsError(false);

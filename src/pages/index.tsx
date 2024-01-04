@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
 import { useCallback } from "react";
 import { Toaster } from "react-hot-toast";
-import PdfContent from "~/components/molucules/PdfContent";
+import FileList from "~/components/organisms/FileList";
 import SearchBar from "~/components/organisms/SearchBar";
 import PageHead from "~/components/templates/Head";
 import PageLayout from "~/components/templates/PageLayout";
@@ -49,20 +49,7 @@ export default function Home() {
           <div className="pt-6">
             <SearchBar />
           </div>
-          <div className="flex w-full flex-wrap gap-4 pt-4">
-            {files && (
-              <>
-                {files.map((file, index) => (
-                  <PdfContent
-                    jpgUrl={file.jpgUrl}
-                    pdfUrl={file.pdfUrl}
-                    title={file.name}
-                    key={index}
-                  />
-                ))}
-              </>
-            )}
-          </div>
+          <FileList files={files} />
         </div>
       </PageLayout>
     </>
