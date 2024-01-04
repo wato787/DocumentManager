@@ -13,14 +13,11 @@ const AddCategoryDialog = (props: Props): ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [categoryName, setCategoryName] = useState<string>("");
 
-  const { addCategory, getAllCategories } = useCategory();
-  const { refetch } = getAllCategories.useQuery();
+  const { addCategory } = useCategory();
 
   const handleApply = async (): Promise<void> => {
     setIsLoading(true);
-    await addCategory.mutateAsync({ name: categoryName }).then(() => {
-      refetch();
-    });
+    await addCategory.mutateAsync({ name: categoryName });
     setIsLoading(false);
     props.onClose();
     props.onComplete();

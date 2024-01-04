@@ -25,8 +25,7 @@ const UploadFileDialog = (props: Props): ReactElement => {
   const [isError, setIsError] = useState<boolean>(false);
 
   const { uploadFiles } = useCloudinaryUpload();
-  const { addFiles, getFiles } = useFile();
-  const { refetch } = getFiles.useQuery();
+  const { addFiles } = useFile();
 
   const validate = useCallback((): boolean => {
     if (pdfFiles === undefined) {
@@ -63,7 +62,7 @@ const UploadFileDialog = (props: Props): ReactElement => {
         };
       });
 
-      await addFiles.mutateAsync(req).then(() => refetch());
+      await addFiles.mutateAsync(req);
 
       handleReset();
       props.onClose();
@@ -72,7 +71,7 @@ const UploadFileDialog = (props: Props): ReactElement => {
       console.log(error);
     }
     setLoading(false);
-  }, [pdfFiles, props, validate, uploadFiles, handleReset, addFiles, refetch]);
+  }, [pdfFiles, props, validate, uploadFiles, handleReset, addFiles]);
 
   const onFileAdded = useCallback((file: FileWithPath) => {
     setIsError(false);
