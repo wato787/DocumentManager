@@ -11,14 +11,14 @@ interface Props {
 const FileList = (props: Props): ReactElement => {
   const keyword = useSearchKeywordStore((state) => state.keyword);
 
-  const filteredFiles = useMemo(() => {
+  const sortedFiles = useMemo(() => {
     if (!keyword || !props.files) return props.files;
     return props.files.filter((file) => file.name.includes(keyword));
   }, [keyword, props.files]);
 
   return (
     <div className="flex w-full flex-wrap gap-4 pt-4">
-      {filteredFiles?.map((file, index) => (
+      {sortedFiles?.map((file, index) => (
         <PdfContent
           jpgUrl={file.jpgUrl}
           pdfUrl={file.pdfUrl}
