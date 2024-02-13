@@ -16,6 +16,7 @@ export default function Home() {
   const { getAllCategories } = useCategory();
   const { getFiles } = useFile();
 
+  // TODO: ここでuseQueryを使っているので、useQueryのstatusを使ってローディング中かどうかを判定する
   const files = getFiles.useQuery().data;
 
   const getCategories = useCallback(() => {
