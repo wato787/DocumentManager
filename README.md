@@ -5,3 +5,19 @@
 - 検索機能
 - ソート機能
   順次機能を追加していきます。
+
+### 使用技術
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- tRPC
+- Prisma
+- Supabase
+- NextAuth.js
+- zustand
+- Material-UI
+- react-dropzone
+- cloudinary
+- React-Hook-Form
+  等...
